@@ -49,13 +49,13 @@ impl<T: Trait> Module<T> {...}
 
 ## 定义公共和私有函数
 
-# 作业 substrate-node-template
+# substrate-node-template
 
-## 第三题、编译成功截图
+## 编译成功截图
 
 ![](./imgs/build-finished.jpg)
 
-## 第四题、运行成功截图
+## 运行成功截图
 
 ![](./imgs/run-finished.jpg)
 
@@ -97,23 +97,11 @@ error[E0609]: no field `__rip` on type `__darwin_arm_thread_state64`
 
 切换到该tags下正常运行。（在前面的课程build substrate的时候是没有出现任何问题的，可能是substrate的依赖都比较新？）
 
-## 第一题
+# SubStrate学习网站
 
-- Substrate官方文档地址：https://substrate.dev/docs/en/
-- Substrate的recipe网址：https://substrate.dev/recipes/
-- Substrate的 rust docs 网址：https://substrate.dev/rustdocs/latest/sc_service/index.html
-- Substrate的tutorial网址：https://substrate.dev/en/tutorials
-- Substrate Seminar周几进行：每隔一个星期二 14:00
-
-## 第二题
-
-Start & watch
-
-![](./imgs/substrate.jpg)
-
-![](./imgs/polkadot.jpg)
-
-Fork substrate & issue
-
-![](./imgs/substrate.jpg)
+- Substrate 官方文档：https://substrate.dev/docs/en/
+- Substrate 的 recipe ：https://substrate.dev/recipes/
+- Substrate 的 rust docs ：https://substrate.dev/rustdocs/latest/sc_service/index.html
+- Substrate 的 tutorial ：https://substrate.dev/en/tutorials
+- Substrate Seminar：https://substrate.dev/en/seminar  (两周一次，周二 14:00)
 
