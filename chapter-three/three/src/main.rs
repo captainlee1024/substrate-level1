@@ -5,20 +5,30 @@ use std::{
 
 // cargo run and curl 127.0.0.1:8080 -d hello
 fn main() {
+    let normal = "127.0.0.1:8080";
+    let err = "127.0.0.1:1";
+    start(&err);
+    start(&normal);
+}
+
+fn start(ip_port: &str) {
     // TcpListener 用于舰艇TCP连接
     // bind()返回Result<T, E>
     // 执行成功时返回一个TcpListener实例，并监听传入的ip:port
     // 有可能执行失败，返回对应的错误，例如监听1024以下端口时，非管理员用户会失败
-    // unwrap() 在返回错误时会panic终止程序，正常时返回TcpListener类型实例
-    // 这里不再进行自定义的错误处理
-    let listener = TcpListener::bind("127.0.0.1:8080").unwrap();
-
-    // 返回监听器的连接的迭代器，持续读取客户端发送来的消息
-    for stream in listener.incoming() {
-        // 获取TcpStream
-        let stream = stream.unwrap();
-        // 打印客户端请求信息，并返回响应 "Hi~"
-        handle_connnection(stream)
+    match TcpListener::bind(ip_port) {
+        // 成功时进行后续逻辑
+        Ok(listener) => {
+            // 返回监听器的连接的迭代器，持续读取客户端发送来的消息
+            for stream in listener.incoming() {
+                // 获取TcpStream
+                let stream = stream.unwrap();
+                // 打印客户端请求信息，并返回响应 "Hi~"
+                handle_connnection(stream);
+            }
+        }
+        // 在启动服务加载配置的ip:port时就出现错误时应当及时停止，排查问题
+        Err(e) => println!("Error: {}", e),
     }
 }
 
