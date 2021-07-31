@@ -14,9 +14,11 @@ fn main() {
     let mut v_normal: Vec<u32> = Vec::new();
     v_normal.push(1);
     v_normal.push(1);
+    v_normal.push(1);
+    v_normal.push(1);
     match my_sum(&v_normal) {
         None => println!("Vec sum: overflow"),
-        _ => print!("Vec sum: {}\n", my_sum(&v_normal).unwrap()),
+        Some(sum) => print!("Vec sum: {}\n", sum),
     };
 
     // overflow
@@ -25,7 +27,8 @@ fn main() {
     v_overflow.push(u32::max_value());
     match my_sum(&v_overflow) {
         None => println!("Vec sum: overflow"),
-        _ => print!("Vec sum: {}\n", my_sum(&&v_overflow).unwrap()),
+        // _ => print!("Vec sum: {}\n", my_sum(&&v_overflow).unwrap()),
+        Some(sum) => print!("Vec sum: {}\n", sum),
     };
 
     // 3. 计算图形的面积
@@ -75,7 +78,7 @@ fn my_sum(v: &Vec<u32>) -> Option<u32> {
     for (i, &item) in v.iter().enumerate() {
         sum = match sum.checked_add(item) {
             None => return None,
-            _ => sum.checked_add(item).unwrap(),
+            Some(result) => result,
         };
     }
 

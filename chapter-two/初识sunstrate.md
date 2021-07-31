@@ -41,15 +41,109 @@ impl<T: Trait> Module<T> {...}
 
 ## 引入和定义关联类型
 
+`System::Trait` 是*Runtime*下基础的**pallet** 的`Trait`，在自定义`Trait`的时候几乎都会继承它。
+
+```rust
+pub trait Trait: system::Trait {
+  type Event: From<Event<Self>> + Into<<Self as system::Trait>::Event>
+}
+```
+
+在自定义的`trait`里面还可以自定义其他的关联类型，每个关联类型后面会有该类型的`trait`约束。
+
+```rust
+// From `system` pallet
+pub trait Trait: `static + Eq + Clone {
+  type Origin: ...
+  type Call: ...
+  type Index: ...
+  type BlockNumber: ...
+}
+```
+
+定义关联类型的目的是为了和其他模块产生交互。
+
 ## 定义存储
+
+```rust
+decl_storage! {
+  trait Store for Module<T: Trait> as TemplateModule {
+    // Here we are declaring a StorageValue, `Something` as an Option<u32>
+    // `get(fn something)` defines a getter function
+    // Getter called with `Self::thing()`
+    Smoeting get(fn something): Option<u32>;
+    // Here we are declaring a StorageMap `SomeMap` from an AccountId to a Hash.
+    // Getter called with `Self::some_map(account_id)`
+    SomeMap get(fn some_map): map hasher(identity) T::AccountId => u32;
+  }
+}
+```
+
+
 
 ## 定义事件
 
+```rust
+decl_event!(
+	pub enum Event<T> where AccountId = <T as system::Trait>::AcountId {
+    /// event `SomethingStored` is declared with a parameter of the type `u32` and `AccountId`
+    SomethingStored(u32, AccountId),
+  }
+);
+```
+
+
+
 ## 定义可调用函数
+
+```rust
+decl_module! {
+  pub struct Module<T: Trait> for enum Call where origin: T::Origin {
+    fn deposit_event<T>() = default; // The default deposit_event definition
+    
+    // 声明用户可以调用的方法
+    pub fn do_something(origin, something: u32) -> Result {
+      let sender = ensure_signed(origin)?;
+      <Something::put(something); // Put a value into a StorageValue
+      Self::deposit_event(RawEvent::SomethingStored(something, who)); // Emit Event
+      Ok(()) // Return Ok at the end of function
+    }
+  }
+}
+```
+
+
 
 ## 定义公共和私有函数
 
+这里定义的时候是遵循`Rust`本身的语法的，需要其他模块用到的方法要定义为`pbu`。
+
+```rust
+impl<T :Trait> Module<T> {
+  fn mint(to: T::AccountId, id: T::Hash) -> Result {...}
+  fn transfer(from: T::AccountId, to: T::AccountId, id: T::Hash) -> Result {...}
+}
+```
+
+
+
 # substrate-node-template
+
+## 代码预览
+
+### node
+
+
+
+### Runtime
+
+
+
+
+
+### 3
+
+### 4
 
 ## 编译成功截图
 
